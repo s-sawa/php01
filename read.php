@@ -3,7 +3,6 @@
 $filename = "data/data.txt";
 // fopenでファイルを開く（'r'は読み込みモードで開く）
 $fp = fopen($filename, 'r');
-
 $arrData = [];
 if ($fp) {
     while ($txt = fgets($fp)) {

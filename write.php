@@ -1,4 +1,11 @@
 <?php
+function h($str)
+{
+    return htmlspecialchars(
+        $str,
+        ENT_QUOTES
+    );
+}
 $name = $_POST["name"];
 $sex = $_POST["sex"];
 $protain = $_POST["protain"];
@@ -9,12 +16,29 @@ $price = $_POST["price"];
 $repeat = $_POST["repeat"];
 $c = ",";
 
-//文字作成
-$str = $name . $c . $sex . $c . $protain . $c . $taste . $c . $smoothy . $c . $solubility . $c . $price . $c . $repeat;
-//区切りなのでexplodeで配列にして使うことができる
-// $ar = explode(",", $str);
-// var_dump(($ar));
 
+mb_language("Japanese");
+mb_internal_encoding("UTF-8");
+$contents = $name . 'さんからアンケート回答がありました' . "\r\n"
+    . '性別：' . $sex . "\r\n"
+    . '好きなプロテイン：' . $protain;
+
+$to = 's.s.hrmeee21@gmail.com';
+$title = 'title';
+$message = $contents;
+// $message = $name . "さんからアンケート入力がありました";
+$headers = "From: from@example.com";
+
+if (mb_send_mail($to, $title, $message, $headers)) {
+    echo "メール送信成功です";
+} else {
+    echo "メール送信失敗です";
+}
+
+
+
+//文字作成
+$str = h($name) . $c . $sex . $c . $protain . $c . $taste . $c . $smoothy . $c . $solubility . $c . $price . $c . $repeat;
 
 //File書き込み
 $file = fopen("data/data.txt", "a");    // ファイル読み込み
@@ -22,6 +46,8 @@ fwrite($file, $str . "\n"); // . で接続
 //ファイルを１行ずつ出力
 fclose($file);
 ?>
+
+
 <!DOCTYPE html>
 <html lang="ja">
 
